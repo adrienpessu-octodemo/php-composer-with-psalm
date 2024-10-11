@@ -1,0 +1,20 @@
+{
+    "name": "octodemo/composer-simple-app",
+    "description": "Example php project using composer",
+    "type": "project",
+    "require": {
+        "monolog/monolog": "^2.6",
+        "phpunit/php-timer": "^5.0.3"
+    },
+    "authors": [
+        {
+            "name": "Octodemo",
+            "email": "octodemobot@github.com"
+        }
+    ],
+    "config": {
+        "platform": {
+            "php": "7.3"
+        }
+    }
+}

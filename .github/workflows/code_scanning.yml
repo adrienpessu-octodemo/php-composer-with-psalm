@@ -1,0 +1,44 @@
+name: Psalm Code Scanning
+
+on:
+  workflow_dispatch:
+
+jobs:
+  code_scanning:
+    name: Code Scanning
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Perform PSALM Analysis
+        # uses: docker://vimeo/psalm-github-actions
+        uses: psalm/psalm-github-actions@master
+        with:
+          security_analysis: true
+          relative_dir: ./simple-app
+          report_file: results.sarif
+
+      - name: Fix permissions
+        run: |
+          sudo chmod 777 ./simple-app/results.sarif
+          ls -la ./simple-app
+
+      - name: Update relative paths in SARIF
+        uses: geekmasher/sarif-toolkit/relativepaths@main
+        with:
+          sarif: ./simple-app/results.sarif
+          working: ./simple-app
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ./simple-app/results.sarif
+
+      - name: Attach report
+        uses: actions/upload-artifact@v3
+        with:
+          path: |
+            **/results.sarif

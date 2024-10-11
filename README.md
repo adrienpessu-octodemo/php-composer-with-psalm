@@ -1,0 +1,1 @@
+# php-composer-with-psalm
